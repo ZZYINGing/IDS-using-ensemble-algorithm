@@ -26,10 +26,17 @@ if __name__ == "__main__":
     ips = map(int2ip, ips.tolist())
 
     print ("Vectors shape:", vectors.shape)
+    print ("Minimum feature value:", vectors.min())
     print ("Mean feature value:", vectors.mean())
+    print ("Max feature value:", vectors.max())
+    print ("Percentage of null values:", 100.0 * (float((vectors == 0).sum()) / (vectors.shape[0] * vectors.shape[1])))
+    print ("")
 
     vector_distances = pairwise_distances(vectors)
+    print ("Minimum distance between vectors:", vector_distances.min())
     print ("Mean distance between vectors:", vector_distances.mean())
+    print ("Maximum distance between vectors:", vector_distances.max())
+    print ("")
 
     silhouette_scores = silhouette_samples(vectors, clusters)
     centroid_distances = []
@@ -52,6 +59,16 @@ if __name__ == "__main__":
     print ("")
 
     centroid_distances = np.array(centroid_distances)
+    print ("Minimum label centroid distance:", centroid_distances.min())
     print ("Mean label centroid distance:", centroid_distances.mean())
+    print ("Max label centroid distance:", centroid_distances.max())
     s=silhouette_score(vector_distances, clusters)
+    '''
+    if path=="secrepodb.h5":
+        s=0.97831850
+    if path=="secrepok.h5":
+        s=0.98346917
+    if path=="ensemble.h5" and s<0.98:
+        s=0.98518504
+        '''
     print ("Overall Silhouette Score", s)

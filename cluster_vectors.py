@@ -8,12 +8,11 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser()
     parser.add_argument("-c", "--cluster_method", choices=["kmeans", "dbscan"], default="kmeans")
+    parser.add_argument('-n', "--number_clusters", type=int, default=2)
+    parser.add_argument('-e', '--epsilon', type=float, default=6)
+    parser.add_argument('-m', '--number_points', type=int, default=1)
     parser.add_argument("-i", "--vectors", required=True, help="HDF5 file containing the vectors")
     parser.add_argument("-o", "--output", required=True, help="Output HDF5 containing the vectors")
-    parser.add_argument('-n', "--number_clusters", type=int, default=2, help="get the number of clusters to make in kmeans")
-    parser.add_argument('-e', '--epsilon', type=float, default=6, help="get the epsilon value")
-    parser.add_argument('-mp', '--number_points', type=int, default=1, help="get the minimum nuumber of points")
-
     args = parser.parse_args()
 
     cluster_method = args.cluster_method

@@ -73,10 +73,15 @@ def merging(no_of_techniques,array_of_individual_no_of_clusters,matrix,clusters,
 #get uncertainty 
 def object_similarity_score(clusters):
   s=0
+  print("cluster",clusters)
   for i in clusters:
     s+=i[0]
-  similarity_score_cluster=clusters/s
-  return similarity_score_cluster
+  
+  for i in range(len(clusters)):
+    clusters[i]=clusters[i]/s
+  similarity_score_cluster=clusters
+  print("a",similarity_score_cluster)
+  return np.array(similarity_score_cluster)
 def final_output(oss,alpha2,index):
   output1=[]
   output2= []
@@ -190,14 +195,14 @@ if __name__ == "__main__":
             vectors = f["vectors"][:]
             ips = f["notes"][:]
             clusters = f["cluster"][:]
-
+        #print("v",vectors,"\nc",clusters,"\nips",ips)
         arr_clust.append(clusters)
         counter = Counter(clusters.tolist())
         no_clust.append(len(counter.keys()))
-        #print(no_clust,arr_clust)
+    #print(no_clust,arr_clust)
         
     k=binary_vectorize(arr_clust,no_clust)
-    #print(k)
+    print(len(k),len(k[0]))
     
     s_matrix = similarity_matrix(techniques,no_clust,k)
     #print(s_matrix)
@@ -212,7 +217,7 @@ if __name__ == "__main__":
             break
         else:
             alpha1 +=delta_alpha
-    #print(new_matrix,"needed clust",needed_cluster)
+    print(new_matrix,"needed clust",needed_cluster)
 
     while len(new_matrix)>needed_cluster:
         #print("in")
@@ -232,12 +237,13 @@ if __name__ == "__main__":
         else:
             #print("hello")
             new_matrix=new_merged_matrix
-    #print(new_merged_matrix,len(new_matrix))
+    print("nmm",new_merged_matrix,len(new_matrix))
 
     oss=object_similarity_score(new_merged_matrix)
     #oss>0.6
+    
     oss.transpose()
-    #print("hi\n",oss)
+    print("hi\n",oss)
     
     index=np.argmax(oss,axis=0)
     output1,cluster_with_object,uncertain_cluster=final_output(oss,alpha2,index)

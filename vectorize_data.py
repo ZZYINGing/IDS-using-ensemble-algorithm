@@ -15,7 +15,7 @@ def ip2int(addr):
 
 
 def get_prevectors():
-    data_path = "data/www.secrepo.com/self.logs/"
+    data_path = "data/www.secrepo.com/before/"
     # ensure we get the IPs used in the examples
     prevectors = {
         ip2int("192.187.126.162"): {"requests": {}, "responses": {}},
@@ -24,6 +24,7 @@ def get_prevectors():
     }
     for path in os.listdir(data_path):
         full_path = os.path.join(data_path, path)
+        print(full_path)
         with open(full_path, "r") as f:
             for line in f:
                 try:
@@ -33,7 +34,8 @@ def get_prevectors():
                     continue
 
                 if ip not in prevectors:
-                    if len(prevectors) >= 5000:
+                    if len(prevectors) >= 1000:
+                        print("skipping")
                         break
                     prevectors[ip] = {"requests": {}, "responses": {}}
 
@@ -76,11 +78,13 @@ def convert_prevectors_to_vectors(prevectors):
 
     vectors = np.zeros((len(prevectors.keys()), len(request_types) + len(response_codes)), dtype=np.float32)
     ips = []
-
+    
     for index, (k, v) in enumerate(prevectors.items()):
         ips.append(k)
+        #print(k,v)
         for ri, r in enumerate(request_types):
             if r in v["requests"]:
+                #print(vectors,index,ri,r)
                 vectors[index, ri] = v["requests"][r]
         for ri, r in enumerate(response_codes):
             if r in v["responses"]:
