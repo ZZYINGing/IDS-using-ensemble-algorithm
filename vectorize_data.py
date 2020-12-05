@@ -15,7 +15,7 @@ def ip2int(addr):
 
 
 def get_prevectors():
-    data_path = "data/www.secrepo.com/before/"
+    data_path = "data/www.secrepo.com/self.log/"
     # ensure we get the IPs used in the examples
     prevectors = {
         ip2int("192.187.126.162"): {"requests": {}, "responses": {}},
